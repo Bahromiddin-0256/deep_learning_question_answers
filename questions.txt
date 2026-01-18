@@ -1,0 +1,246 @@
+“CHUQUR O‘QITISH (DEEP LEARNING)” YAKUNIY NAZORAT
+SAVOLLARI
+1. Chuqur o‘qitish (deep learning) ning klassik mashinaviy o‘qitish (machine
+learning) dan farqini, misollar asosida tushuntirib bering.
+2. Katta hajmdagi ma’lumotlar (Big Data) chuqur o‘qitishning rivojlanishida
+qanday rol o‘ynashini izohlab bering.
+3. Nega chuqur neyron tarmoqlar katta hisoblash resurslarini talab qiladi? Izohlab
+bering.
+4. “Model chuqurligi” (model depth) tushunchasini va uning o‘qitish jarayoniga
+ta’sirini tushuntirib bering.
+5. Chuqur tarmoqlarda xususiyatlarni ifodalash (feature representation)
+kontseptsiyasini tushuntirib bering.
+6. Nega chuqur modellarda xususiyatlarni (priznaklarni) avtomatik ajratib olish
+imkoniyati mavjud? Izohlab bering.
+7. Chuqur o‘qitishda taqsimlangan bilim ifodasi (distributed representation)
+tushunchasini tushuntirib bering.
+8. Yuzaki (sayoz) va chuqur modellarning funksiyalarni yaqinlashtirish
+(approksimatsiya) imkoniyatlarini taqqoslab bering.
+9. Katta hajmdagi ma’lumotlar mavjud bo‘lganda, nega chuqur tarmoqlar
+overfitting ga kamroq moyil bo‘lishi mumkinligini tushuntirib bering.
+10. Ko‘p qatlamli perseptronning klassik arxitekturasini tasvirlab bering va uning
+chuqur o‘qitishdagi rolini izohlang.
+11. Chuqur modellarda yo‘qotish funksiyasining (loss function) vazifasini va
+ahamiyatini izohlab bering.
+12. Gradient tushunchasini ta’riflab bering va nima uchun u orqaga tarqalish
+(backpropagation) algoritmi uchun muhimligini tushuntiring.
+13. Gradient tushish (gradient descent) usulining ishlash mexanizmini bayon qilib
+bering.
+14. Batch, mini-batch va stoxastik gradient tushish (stochastic gradient descent)
+usullarining farqlarini tushuntirib bering.
+15. O‘qitish tezligi (learning rate) parametrining model o‘qitilishiga ta’sirini
+izohlab bering.
+16. “Exploding gradients” (portlab ketuvchi gradientlar) nima va u qaysi omillar
+sababli yuzaga kelishi mumkinligini tushuntiring.
+17. “Vanishing gradients” (yo‘qolib ketuvchi gradientlar) nima va u nimasi bilan
+xavfli ekanini izohlab bering.
+18. Nega ReLU faollashtirish funksiyasi yo‘qolib ketuvchi gradientlar
+muammosini ma’lum darajada kamaytirishga yordam beradi? Tushuntirib
+bering.
+19. SGD, Momentum va Nesterov optimizatorlarini taqqoslab, ularning farqli
+jihatlarini izohlab bering.
+20. Adam optimizatorining SGD ga nisbatan asosiy afzalliklarini tushuntirib
+bering.
+21. Adaptiv optimizatorlar (masalan, Adam, RMSProp) tushunchasini va ularning
+umumiy ustun tomonlarini izohlab bering.
+22. Learning rate decay (o‘qitish tezligini bosqichma-bosqich kamaytirish)
+tushunchasini tushuntirib bering.
+23. Gradientlarni cheklash (gradient clipping) nima va qaysi holatlarda
+qo‘llanilishini izohlab bering.
+24. Nega chuqur modellarning optimallashtirish jarayoni sayoz modellarnikiga
+qaraganda murakkabroq bo‘ladi? Tushuntirib bering.
+25. Egar nuqta (saddle point) tushunchasini va uning o‘qitish jarayoniga ta’sirini
+izohlab bering.
+26. Chuqur o‘qitishda nima uchun L1 va L2 muntazamlashtirish (regularizatsiya)
+usullari qo‘llaniladi? Tushuntirib bering.
+27. Dropout usulining mazmunini va uning overfitting ni kamaytirishdagi rolini
+izohlab bering.
+28. Early stopping (erta to‘xtatish) nima va u qaysi maqsadda qo‘llanilishini
+tushuntiring.
+29. Batch normalization va layer normalization usullarining farqlarini tushuntirib
+bering.
+30. Nega normalizatsiya (batch/layer norm) o‘qitish jarayonini tezlashtirishi
+mumkinligini izohlab bering.
+31. Ma’lumotlarni kengaytirish (data augmentation) nima va u nima uchun zarur
+ekani haqida yozing.
+32. Shovqin kiritish (noise injection) orqali muntazamlashtirishning ishlash
+prinsipi va maqsadini tushuntirib bering.
+33. Oversampling (ortiqcha tanlash) usuli nomutanosib (imbalanced) sinflarga ega
+ma’lumotlar bilan ishlashda qanday yordam berishini izohlang.
+34. Nega juda katta (ko‘p parametrli) modellar overfitting ga kuchliroq moyil
+bo‘ladi? Izohlab bering.
+35. Train, validation va test xatoliklari o‘rtasidagi farqlarni tushuntirib bering.
+36. Neyron tarmog‘ida faollashtirish funksiyasining umumiy roli nimadan
+iboratligini izohlang.
+37. Nega sigmoid faollashtirish funksiyasi chuqur tarmoqlarda ko‘p hollarda
+samarasiz hisoblanadi? Tushuntiring.
+38. ReLU va Leaky ReLU faollashtirish funksiyalarini taqqoslab bering.
+39. ELU (Exponential Linear Unit) funksiyasi nima va uning asosiy afzalliklari
+nimada, izohlab bering.
+40. Softmax funksiyasi nima uchun va qaysi qatlamda odatda qo‘llanilishini
+tushuntirib bering.
+41. Swish faollashtirish funksiyasi nima va nega u ReLU ning yaxshilangan
+varianti sifatida ko‘rilishini izohlang.
+42. To‘yingan (saturating) faollashtirish funksiyalari muammosini tushuntirib
+bering.
+43. Qaysi holatlarda tanh faollashtirish funksiyasini sigmoid funksiyasiga nisbatan
+afzal ko‘rish mumkinligini izohlab bering.
+44. Nega chiziqli faollashtirish funksiyasi chuqur modellar qurishga imkon
+bermaydi? Tushuntiring.
+45. Faollashtirish funksiyasi tanlovi o‘qitish tezligi va barqarorligiga qanday ta’sir
+ko‘rsatishini izohlang.
+46. To‘g‘ri tarqaluvchi neyron tarmoq (feedforward neural network) tushunchasini
+ta’riflab bering.
+47. Nega ba’zi vazifalarda ko‘p qatlamli chuqur arxitektura talab qilinadi?
+Sabablarini tushuntirib bering.
+48. Yashirin (hidden) qatlamlarning vazifasi va chuqur tarmoqlardagi ahamiyatini
+izohlab bering.
+49. Nega chuqur neyron tarmoqlar universal approksimatorlar sifatida qaraladi?
+Tushuntirib bering.
+50. ResNet arxitekturasidagi qoldiq ulanishlar (residual connections) g‘oyasini va
+ularning ahamiyatini izohlab bering.
+51. Neyron tarmog‘ining oldinga tarqalish (forward pass) jarayonini bosqichmabosqich tushuntirib bering.
+52. Neyron tarmog‘ining orqaga tarqalish (backward pass) jarayonini bosqichmabosqich izohlab bering.
+53. Ma’lumotlarni train/validation/test to‘plamlariga ajratish nima uchun muhim
+ekanini tushuntirib bering.
+54. Modelni baholashda aniqlik (accuracy) va F1-score ko‘rsatkichlarini taqqoslab
+bering.
+55. Tasniflash vazifalarida chalkashlik matritsasi (confusion matrix) nima ekanini
+va qanday axborot berishini tushuntiring.
+56. Precision va recall ko‘rsatkichlari nimani ifodalashini va ularning rolini izohlab
+bering.
+57. ROC egri chizig‘i (ROC curve) va AUC ko‘rsatkichlarini tushuntirib bering.
+58. Qaysi holatlarda MSE (mean squared error) ni MAE (mean absolute error) ga
+nisbatan afzal ko‘rish mumkinligini izohlang.
+59. Bias–variance muvozanati (tradeoff) tushunchasini chuqur o‘qitish kontekstida
+tushuntirib bering.
+60. Nima uchun k-fold cross-validation usuli qo‘llanadi? Uning maqsadini izohlab
+bering.
+61. Konvolyutsiya (svyortka) amalini CNN kontekstida tushuntirib bering.
+62. Qabul maydoni (receptive field) tushunchasini va uning CNN lardagi
+ahamiyatini izohlab bering.
+63. Filtr (yadro, kernel) ning ishlash mexanizmini tushuntirib bering.
+64. Xususiyat xaritasi (feature map) nima ekanini va uning CNN dagi rolini
+izohlang.
+65. Padding nima va u qaysi maqsadlarda qo‘llanilishini tushuntirib bering.
+66. Stride = 1 va stride = 2 parametrlarining farqlarini va chiqish o‘lchamiga
+ta’sirini izohlab bering.
+67. Max pooling qatlamining vazifasi nimadan iborat? Tushuntirib bering.
+68. Average pooling qatlamining vazifasini va qachon ishlatilishini tushuntirib
+bering.
+69. Dilated convolution (kengaytirilgan svyortka) tushunchasini va uning
+afzalliklarini izohlab bering.
+70. LeNet arxitekturasining asosiy tuzilishi va xususiyatlarini tushuntirib bering.
+71. AlexNet arxitekturasining asosiy g‘oyalari va chuqur o‘qitish tarixidagi
+ahamiyatini izohlang.
+72. VGG arxitekturasi AlexNet ga nisbatan qaysi jihatlarni yaxshilaganini
+tushuntirib bering.
+73. Inception arxitekturasining asosiy g‘oyasini va uning o‘ziga xos tomonlarini
+izohlab bering.
+74. ResNet va DenseNet arxitekturalarini taqqoslab, ularning farqli jihatlarini
+tushuntiring.
+75. Skip connection (qoldiq/uzatib o‘tuvchi ulanish) nima va u nima uchun
+kerakligini izohlab bering.
+76. Rekurrent (takroriy) neyron tarmoqlar (RNN) g‘oyasini tushuntirib bering.
+77. Ma’lumotlardagi vaqt bo‘yicha bog‘liqlik (temporal dependence)
+tushunchasini izohlab bering.
+78. Nega klassik RNN lar yo‘qolib ketuvchi gradient muammosidan kuchli aziyat
+chekadi? Tushuntiring.
+79. LSTM (Long Short-Term Memory) hujayrasining tuzilishini va ishlash
+prinsipini izohlab bering.
+80. GRU (Gated Recurrent Unit) tuzilishi va ishlash prinsipini tushuntirib bering.
+81. LSTM va GRU ni arxitektura va amaliy qo‘llanilishi bo‘yicha taqqoslab bering.
+82. Qaysi holatlarda RNN ni CNN ga nisbatan afzal qo‘llash mumkinligini izohlab
+bering.
+83. Teacher forcing yondashuvi nima va u seq2seq modellarida qanday
+qo‘llanilishini tushuntiring.
+84. “Sequence-to-sequence” (ketma-ketlikdan ketma-ketlikka) model
+tushunchasini tushuntirib bering.
+85. Seq2seq modellarida e’tibor (attention) mexanizmining ishlash g‘oyasini
+izohlab bering.
+86. Nega attention yondashuvi ko‘plab vazifalarda RNN larni almashtirgan deb
+qaraladi? Tushuntiring.
+87. Self-attention (o‘z-o‘ziga e’tibor) mexanizmi nima ekanini tushuntirib bering.
+88. Attention mexanizmida Query, Key va Value tushunchalarining rolini izohlab
+bering.
+89. Multi-head attention nima va nima uchun bir nechta “bosh” (head)
+qo‘llanilishini tushuntiring.
+90. Transformer modelida pozitsion kodlash (positional encoding) nima va nima
+uchun zarurligini izohlang.
+91. Transformer arxitekturasida kodlovchi (encoder) va dekoder (decoder) ning
+vazifalarini tushuntirib bering.
+92. Asl Transformer arxitekturasining umumiy tuzilishini qisqacha tushuntirib
+bering.
+93. GPT va BERT modellarining asosiy farqlarini izohlab bering.
+94. Faqat encoder, faqat decoder va encoder–decoder arxitekturalarini taqqoslab
+bering.
+95. Katta til modellarida “kontekst oynasi” (context window) cheklovi
+muammosini tushuntirib bering.
+96. Autoencoder (avtoenkoder) modelining asosiy g‘oyasini tushuntirib bering.
+97. Encoder va decoder tushunchalarini izohlab bering.
+98. Bottleneck (tor bo‘g‘in, siqilgan yashirin qatlam) nima va nima uchun
+kerakligini tushuntirib bering.
+99. O‘lchamni kamaytirish (dimensionality reduction) vazifasida autoencoder dan
+qanday foydalanish mumkinligini izohlab bering.
+100. Denoising autoencoder qanday ishlashini va uning maqsadini tushuntirib
+bering.
+101. Variational autoencoder (VAE) nima ekanini tushuntirib bering.
+102. VAE va oddiy autoencoder o‘rtasidagi asosiy farqlarni izohlab bering.
+103. Latent space (yashirin fazo) tushunchasini izohlab bering.
+104. Generativ modellar tarkibida VAE qaysi maqsadlarda qo‘llanilishini
+tushuntiring.
+105. VAE da KL-divergensiya (Kullback–Leibler divergence) nimani anglatishini
+va nima uchun qo‘llanilishini izohlab bering.
+106. GAN (Generative Adversarial Network) modelining asosiy g‘oyasini
+tushuntirib bering.
+107. GAN tarkibidagi generatorning vazifasi nimadan iborat ekanini tushuntirib
+bering.
+108. GAN tarkibidagi diskriminatorning vazifasini tushuntirib bering.
+109. Nega GAN larni o‘qitish murakkab hisoblanadi? Asosiy sabablari-ni izohlab
+bering.
+110. DCGAN oddiy GAN dan nimasi bilan farq qilishini izohlab bering.
+111. WGAN (Wasserstein GAN) g‘oyasini tushuntirib bering.
+112. Wasserstein masofasi (Wasserstein distance) nima ekanini izohlab bering.
+113. Gradient penalty (gradientni jazolash) g‘oyasini va maqsadini tushuntirib
+bering.
+114. StyleGAN oddiy GAN ga nisbatan nimalarni yaxshilaganini izohlab bering.
+115. Word embedding (so‘zlarni zich vektor ko‘rinishida ifodalash) g‘oyasini
+tushuntirib bering.
+116. NLP da tokenizer (tokenizator) nima va uning asosiy vazifasini tushuntirib
+bering.
+117. Byte-Pair Encoding (BPE) segmentatsiyasi nima uchun qo‘llanilishini izohlab
+bering.
+118. NLP da OOV (out-of-vocabulary) muammosi nimadan iborat ekanini
+tushuntiring.
+119. Masked language modeling (maskalangan til modellashtirish) g‘oyasini
+tushuntirib bering.
+120. Mustahkamlangan o‘qitish (Reinforcement Learning) ning nazoratli o‘qitish
+(supervised learning) dan farqlarini tushuntirib bering.
+121. Mustahkamlangan o‘qitishda agent va muhit (environment) tushunchalarini
+izohlang.
+122. Reward (mukofot) tushunchasi nima va u qanday shakllanishini tushuntirib
+bering.
+123. Policy (siyosat, strategiya) nima va agent xatti-harakatlarida qanday rol
+o‘ynashini izohlab bering.
+124. Q-learning algoritmining asosiy g‘oyasini tushuntirib bering.
+125. DQN (Deep Q-Network) da neyron tarmoq qanday vazifani bajarishini izohlab
+bering.
+126. Experience replay (tajribani qayta ijro qilish) nima va nima uchun
+qo‘llanilishini tushuntiring.
+127. Target network nima va DQN da u nima maqsadda qo‘llanilishini izohlab
+bering.
+128. Policy gradient yondashuvi nima ekanini tushuntirib bering.
+129. Actor–Critic modellarining asosiy afzalliklarini izohlab bering.
+130. Ob’ektlarni aniqlash (object detection) nima ekanini tushuntirib bering.
+131. Tasniflash (klassifikatsiya) va segmentatsiya vazifalari o‘rtasidagi farqlarni
+tushuntirib bering.
+132. Semantik segmentatsiya (semantic segmentation) nima ekanini izohlab bering.
+133. Instance segmentatsiya nima va u semantik segmentatsiyadan nimasi bilan farq
+qilishini tushuntirib bering.
+134. U-Net arxitekturasining asosiy g‘oyasini va tuzilishini tushuntirib bering.
+135. YOLO arxitekturasi R-CNN oilasiga mansub modellar bilan taqqoslang, asosiy
+farqlarini izohlab bering.
+136. Anchor boxes nima va ularning object detection dagi vazifasini tushuntirib
+bering.
+137. Bounding box regression (chegaralovchi to‘rtburchak parametrlarini regressiya
+qilish) nima ekanini tushuntirib bering.
