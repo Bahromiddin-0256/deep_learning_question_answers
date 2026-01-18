@@ -37,7 +37,7 @@ Agent qaysi harakatlar unga ko‘proq "plyus" olib kelishini sinov-xato (trial a
 
 **Javob:**
 **Tushuncha:**
-Policy ($\\pi$) — bu Agentning "xulq-atvor qoidalari to‘plami". U Agentga ma’lum bir vaziyatda ($s$) qanday harakat ($a$) qilish kerakligini aytib beradi. Bu funksiya: $a = \\pi(s)$.
+Policy ($\pi$) — bu Agentning "xulq-atvor qoidalari to‘plami". U Agentga ma’lum bir vaziyatda ($s$) qanday harakat ($a$) qilish kerakligini aytib beradi. Bu funksiya: $a = \pi(s)$.
 
 **Turlari:**
 1.  **Deterministik:** Aniq qoida. "Agar dushmanni ko‘rsang $\to$ Sakra".
@@ -56,8 +56,8 @@ U Policy ni to‘g‘ridan-to‘g‘ri qidirmaydi, balki har bir harakatning "qa
 
 **G‘oya:**
 **Q-funksiya ($Q(s, a)$):** "Agar men hozir $s$ holatda bo‘lsam va $a$ harakatni qilsam, kelajakda jami qancha mukofot olishim mumkin?" degan savolga javob beradi.
-*   Masalan: $Q(\\text{oldinda chuqur}, \\text{oldinga yurish}) = -100$ (O‘lasan).
-*   $Q(\\text{oldinda chuqur}, \\text{sakrash}) = +50$ (Tirik qolasan va tanga olasan).
+*   Masalan: $Q(\text{oldinda chuqur}, \text{oldinga yurish}) = -100$ (O‘lasan).
+*   $Q(\text{oldinda chuqur}, \text{sakrash}) = +50$ (Tirik qolasan va tanga olasan).
 
 Agent har doim eng katta $Q$ qiymatga ega bo‘lgan harakatni tanlaydi (Greedy strategy).
 O‘qitish davomida Agent ushbu Q-qiymatlarni Bellman tenglamasi orqali yangilab, aniqlashtirib boradi.

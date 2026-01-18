@@ -127,7 +127,7 @@ Uning hosilasi juda oddiy:
 
 **Yordami:**
 Sigmoid funksiyasida hosila har doim 1 dan kichik bo‘lib, ko‘paytirilganda signalni so‘ndirardi. ReLUda esa musbat qiymatlar uchun hosila aynan **1 ga teng**.
-*   Matematik jihatdan: \(1 \times 1 \times 1 \times \dots \times 1 = 1\).
+*   Matematik jihatdan: \(1 \times 1 	imes 1 	imes \dots \times 1 = 1\).
 *   Bu shuni anglatadiki, gradient chuqur qatlamlar orqali hech qanday yo‘qotishsiz to‘g‘ridan-to‘g‘ri orqaga o‘ta oladi. Bu xususiyat juda chuqur tarmoqlarni (masalan, yuzlab qatlamli CNNlarni) samarali o‘qitish imkonini yaratdi va Deep Learning inqilobining asosiy sababchilaridan biri bo‘ldi.
 
 ---

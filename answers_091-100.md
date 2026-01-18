@@ -87,7 +87,7 @@ Shuning uchun kontekstni cheksiz uzaytirib bo‘lmaydi — kompyuter xotirasi (V
 **Javob:**
 Autoencoder — bu "Nazoratsiz o‘qitish" (Unsupervised Learning) turiga kiruvchi neyron tarmoq.
 **G‘oya:**
-Modelning maqsadi kirishga berilgan ma’lumotning (masalan, rasmning) aynan nusxasini chiqishda hosil qilishdir. $Output \approx Input$.
+Modelning maqsadi kirishga berilgan ma’lumotning (masalan, rasmning) aynan nusxasini chiqishda hosil qilishdir. $Output ≈ Input$.
 Lekin bunda bitta hiyla bor: Tarmoqning o‘rtasi ("beli") ataylab juda tor qilib qo‘yiladi.
 
 **Maqsad:**
@@ -148,7 +148,7 @@ Oddiy Autoencoder ba’zan baribir "yodlab olishga" (Identity) o‘tib ketishi m
 
 **Ishlash prinsipi:**
 Denoising Autoencoder (DAE) o‘qitish jarayonini qiyinlashtiradi:
-1.  Kirish rasmiga ataylab **shovqin qo‘shiladi** (masalan, ba’zi piksellar o‘chiriladi yoki dog‘ tushiriladi) $\to \tilde{x}$.
+1.  Kirish rasmiga ataylab **shovqin qo‘shiladi** (masalan, ba’zi piksellar o‘chiriladi yoki dog‘ tushiriladi) $	o 	ilde{x}$.
 2.  Modelga shu buzilgan rasm beriladi.
 3.  Lekin talab qilinadi: "Chiqishda menga buzilgan rasmni emas, **asl toza rasmni ($x$)** qaytarib ber!"
 
