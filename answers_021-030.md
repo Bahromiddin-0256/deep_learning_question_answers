@@ -27,9 +27,24 @@ Learning Rate Decay (yoki Learning Rate Scheduling) — bu o‘qitish jarayoni d
 *   **Oxirida:** Model global minimumga yaqinlashganda, katta qadamlar xavfli bo‘lib qoladi. Model minimum atrofida u yoqdan-bu yoqqa sakrab yurishi (oscillate) va aniq eng past nuqtaga tusha olmasligi mumkin. Shuning uchun, jarayon oxirida **juda kichik qadamlar** bilan siljish kerak.
 
 **Usullari:**
-1.  **Step Decay:** Har $N$ epoxada tezlikni ma’lum koeffitsiyentga (masalan, 0.1 ga) kamaytirish.
-2.  **Exponential Decay:** Tezlikni har qadamda eksponentsial qonuniyat bo‘yicha kamaytirish.
-3.  **Cosine Decay:** Tezlikni kosinus to‘lqini bo‘yicha o‘zgartirish (avval sekin tushadi, o‘rtada tez, oxirida yana sekin).
+
+1.  **Step Decay:**
+
+    $$\eta_t = \eta_0 \cdot \gamma^{\lfloor \frac{t}{N} \rfloor}$$
+
+    bu yerda $\eta_0$ - boshlang'ich tezlik, $\gamma$ - kamayish koeffitsienti (masalan, 0.1), $N$ - har necha epoxada kamaytirish.
+
+2.  **Exponential Decay:**
+
+    $$\eta_t = \eta_0 \cdot e^{-\lambda t}$$
+
+    bu yerda $\lambda$ - kamayish tezligi.
+
+3.  **Cosine Decay:**
+
+    $$\eta_t = \eta_{min} + \frac{1}{2}(\eta_0 - \eta_{min})\left(1 + \cos\left(\frac{t}{T}\pi\right)\right)$$
+
+    bu yerda $T$ - umumiy o'qitish qadamlari soni.
 
 Bu usul modelning aniqligini (accuracy) sezilarli darajada oshirishga yordam beradi.
 
@@ -83,13 +98,29 @@ Ko‘p o‘lchamli fazolarda (chuqur o‘qitishda) lokal minimumlardan ko‘ra e
 **Javob:**
 Muntazamlashtirish (Regularization) — bu modelning **overfitting** (haddan tashqari moslashish) bo‘lishini oldini olish uchun ishlatiladigan texnika. U modelga "vaznlarni iloji boricha kichik ushlab tur" degan qo‘shimcha talabni yuklaydi.
 
-**L2 Regularization (Ridge):**
-*   Loss funksiyasiga vaznlarning kvadratini qo‘shadi: $Loss + \lambda \sum w^2$.
-*   **Maqsadi:** Bitta ham vaznning o‘ta katta bo‘lib ketishiga yo‘l qo‘ymaslik. Katta vaznlar modelni beqaror qiladi va kirishdagi kichik shovqinga qattiq reaksiya berishga olib keladi. L2 hamma vaznlarni bir tekisda kichraytiradi (Weight Decay).
+**L2 Regularization (Ridge / Weight Decay):**
+
+Xatolik funksiyasi:
+
+$$L_{total} = L_{original} + \lambda \sum_{i=1}^{n} w_i^2$$
+
+Gradient yangilash:
+
+$$w = w - \eta(\nabla L + 2\lambda w) = w(1 - 2\eta\lambda) - \eta\nabla L$$
+
+*   **Maqsadi:** Bitta ham vaznning o'ta katta bo'lib ketishiga yo'l qo'ymaslik. Katta vaznlar modelni beqaror qiladi va kirishdagi kichik shovqinga qattiq reaksiya berishga olib keladi. L2 hamma vaznlarni bir tekisda kichraytiradi.
 
 **L1 Regularization (Lasso):**
-*   Loss funksiyasiga vaznlarning absolyut qiymatini qo‘shadi: $Loss + \lambda \sum |w|$.
-*   **Maqsadi:** Bu usul ba’zi keraksiz vaznlarni **butunlay nolga** aylantirib yuboradi. Natijada model "siyrak" (sparse) bo‘lib qoladi, ya’ni u faqat eng muhim xususiyatlarnigina tanlab oladi. Bu xususiyatlarni tanlash (feature selection) uchun juda foydali.
+
+$$L_{total} = L_{original} + \lambda \sum_{i=1}^{n} |w_i|$$
+
+*   **Maqsadi:** Bu usul ba'zi keraksiz vaznlarni **butunlay nolga** aylantirib yuboradi. Natijada model "siyrak" (sparse) bo'lib qoladi, ya'ni u faqat eng muhim xususiyatlarnigina tanlab oladi. Bu xususiyatlarni tanlash (feature selection) uchun juda foydali.
+
+**Vizual taqqoslash:**
+```
+L2: vaznlarni kichraytiradi      L1: vaznlarni nolga aylantiradi
+    w → 0.1w → 0.01w                  w → 0.5w → 0 (aniq nol)
+```
 
 ---
 
@@ -112,11 +143,29 @@ Dropout — bu o‘qitish jarayonida (faqat training paytida) neyronlarni tasodi
 Early Stopping — bu modelni o‘qitishni belgilangan epoxalar soni (masalan, 1000 epoxa) tugamasdan oldin to‘xtatish strategiyasidir.
 
 **Maqsadi va Ishlash tartibi:**
-O‘qitish paytida biz ikkita grafikni kuzatib boramiz:
+
+O'qitish paytida biz ikkita grafikni kuzatib boramiz:
 1.  **Training Loss:** Bu doimiy ravishda kamayib boradi (model yodlayapti).
 2.  **Validation Loss:** Bu modelning haqiqiy imtihondagi bahosi.
-Boshida ikkalasi ham kamayadi. Lekin ma’lum bir nuqtadan keyin Training Loss kamayishda davom etsa ham, Validation Loss **oshishni** boshlaydi. Bu nuqta **overfitting** boshlanganini bildiradi: model endi o‘rganmayapti, balki yodlayapti.
-Early Stopping aynan shu burilish nuqtasini aniqlaydi va o‘qitishni darhol to‘xtatib, o‘sha paytdagi eng yaxshi modelni saqlab qoladi. Bu resursni tejaydi va eng yuqori aniqlikni ta’minlaydi.
+
+**Early Stopping Vizualizatsiyasi:**
+```
+Loss
+  ^
+  |  Training Loss
+  |    ╲
+  |     ╲_______________
+  |
+  |  Validation Loss    ╱ overfitting boshlandi
+  |    ╲              ╱
+  |     ╲___________╱
+  |                 ↑
+  |           Bu yerda to'xtat!
+  └────────────────────────────> Epoxalar
+```
+
+Boshida ikkalasi ham kamayadi. Lekin ma'lum bir nuqtadan keyin Training Loss kamayishda davom etsa ham, Validation Loss **oshishni** boshlaydi. Bu nuqta **overfitting** boshlanganini bildiradi: model endi o'rganmayapti, balki yodlayapti.
+Early Stopping aynan shu burilish nuqtasini aniqlaydi va o'qitishni darhol to'xtatib, o'sha paytdagi eng yaxshi modelni saqlab qoladi. Bu resursni tejaydi va eng yuqori aniqlikni ta'minlaydi.
 
 ---
 
@@ -126,15 +175,35 @@ Early Stopping aynan shu burilish nuqtasini aniqlaydi va o‘qitishni darhol to�
 Ikkala usul ham tarmoq ichidagi qiymatlarni (aktivatsiyalarni) standartlashtirish (o‘rtacha qiymatni 0 ga, dispersiyani 1 ga keltirish) uchun xizmat qiladi, lekin ular buni turlicha bajaradi.
 
 1.  **Batch Normalization (Batch Norm):**
-    *   **Yo‘nalishi:** Normalizatsiya **batch (guruh)** bo‘ylab amalga oshiriladi.
-    *   Agar bizda 32 ta rasm bo‘lsa, u har bir kanal (feature) uchun shu 32 ta rasmdagi o‘rtacha qiymatni hisoblaydi.
-    *   **Qo‘llanilishi:** Asosan Kompyuterni Ko‘rish (CNN) sohasida standart hisoblanadi.
-    *   **Kamchiligi:** Kichik batchlar bilan (masalan, 2 yoki 4 ta rasm) yaxshi ishlamaydi va RNNlarda qo‘llash qiyin.
+    *   **Yo'nalishi:** Normalizatsiya **batch (guruh)** bo'ylab amalga oshiriladi.
+
+    **Formula:**
+
+    $$\mu_B = \frac{1}{m}\sum_{i=1}^{m} x_i$$ (batch o'rtachasi)
+
+    $$\sigma_B^2 = \frac{1}{m}\sum_{i=1}^{m} (x_i - \mu_B)^2$$ (batch dispersiyasi)
+
+    $$\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}$$ (normalizatsiya)
+
+    $$y_i = \gamma \hat{x}_i + \beta$$ (masshtablash va siljish)
+
+    bu yerda $m$ - batch hajmi, $\gamma$ va $\beta$ - o'rganiladigan parametrlar.
+
+    *   **Qo'llanilishi:** Asosan Kompyuterni Ko'rish (CNN) sohasida standart hisoblanadi.
+    *   **Kamchiligi:** Kichik batchlar bilan (masalan, 2 yoki 4 ta rasm) yaxshi ishlamaydi va RNNlarda qo'llash qiyin.
 
 2.  **Layer Normalization (Layer Norm):**
-    *   **Yo‘nalishi:** Normalizatsiya **har bir namuna (sample)** uchun alohida bajariladi.
-    *   U bitta rasmning (yoki matnning) o‘zidagi barcha neyronlar qiymatining o‘rtachasini oladi. Boshqa namunalarga bog‘liq emas.
-    *   **Qo‘llanilishi:** Asosan Tabiiy Tilni Qayta Ishlash (NLP), Transformerlar va RNNlarda ishlatiladi. Batch o‘lchamiga bog‘liq emas.
+    *   **Yo'nalishi:** Normalizatsiya **har bir namuna (sample)** uchun alohida bajariladi.
+    *   U bitta rasmning (yoki matnning) o'zidagi barcha neyronlar qiymatining o'rtachasini oladi. Boshqa namunalarga bog'liq emas.
+    *   **Qo'llanilishi:** Asosan Tabiiy Tilni Qayta Ishlash (NLP), Transformerlar va RNNlarda ishlatiladi. Batch o'lchamiga bog'liq emas.
+
+**Vizual farq:**
+```
+Batch Norm:                  Layer Norm:
+[Sample 1] [Sample 2] ...    [Sample 1]
+   ↓ ↓ ↓     ↓ ↓ ↓              ← → →
+Batch bo'ylab normalize      Sample ichida normalize
+```
 
 ---
 

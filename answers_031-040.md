@@ -91,9 +91,18 @@ Mashinaviy o‘qitishda ma’lumotlar to‘plami uch qismga ajratiladi va ularni
     *   **Xususiyati:** Agar Train Error kamaysa-yu, Validation Error osha boshlasa, bu **Overfitting** (qayta moslashish) boshlanganining aniq belgisidir. Shu nuqtada o‘qitishni to‘xtatish kerak (Early Stopping).
 
 3.  **Test Error (Sinov xatoligi):**
-    *   **Manba:** Model to‘liq tayyor bo‘lgunga qadar umuman ishlatilmaydigan, "seifda saqlangan" ma’lumotlar (Test set).
+    *   **Manba:** Model to'liq tayyor bo'lgunga qadar umuman ishlatilmaydigan, "seifda saqlangan" ma'lumotlar (Test set).
     *   **Vazifasi:** Modelning real hayotdagi samaradorligini xolis baholash.
-    *   **Farqi:** Biz Validation setga qarab modelni sozlaganimiz uchun, model bilvosita bo‘lsa ham Validation ma’lumotlariga moslashib qoladi. Test Error esa mutlaqo toza va yakuniy bahodir.
+    *   **Farqi:** Biz Validation setga qarab modelni sozlaganimiz uchun, model bilvosita bo'lsa ham Validation ma'lumotlariga moslashib qoladi. Test Error esa mutlaqo toza va yakuniy bahodir.
+
+**Ma'lumotlarni bo'lish vizualizatsiyasi:**
+```
+Butun Dataset (100%)
+    ↓
+    ├─→ Train Set (70%)        ← Model bu yerda o'rganadi
+    ├─→ Validation Set (15%)   ← Giperparametrlarni sozlash
+    └─→ Test Set (15%)         ← Yakuniy baholash (faqat bir marta)
+```
 
 ---
 
@@ -139,29 +148,71 @@ Sigmoid funksiyasi: $\sigma(x) = \frac{1}{1 + e^{-x}}$. U har qanday sonni (0, 1
 ### 38. ReLU va Leaky ReLU faollashtirish funksiyalarini taqqoslab bering.
 
 **Javob:**
+
+**Vizual taqqoslash:**
+```
+    f(x)                      f(x)
+     ^                         ^
+     |    ╱                    |    ╱
+     |   ╱                     |   ╱
+     |  ╱                      |  ╱
+  ───┼────────> x           ───┼────────> x
+     |                         |╱ (kichik nishab α=0.01)
+     |
+   ReLU                    Leaky ReLU
+```
+
 **1. ReLU (Rectified Linear Unit):**
-*   **Formula:** $f(x) = \max(0, x)$.
-*   **Mantiq:** Agar signal musbat bo‘lsa, uni o‘zgarishsiz o‘tkazadi. Agar manfiy bo‘lsa, to‘sib qo‘yadi (0 ga aylantiradi).
+
+$$f(x) = \max(0, x) = \begin{cases} x & \text{if } x > 0 \\ 0 & \text{if } x \leq 0 \end{cases}$$
+
+$$f'(x) = \begin{cases} 1 & \text{if } x > 0 \\ 0 & \text{if } x \leq 0 \end{cases}$$
+
 *   **Afzalligi:**
-    *   **Sparsity (Siyraklik):** Neyronlarning bir qismi 0 bo‘lib turadi, bu modelni yengil va samarali qiladi.
-    *   **Gradient saqlanishi:** Musbat sohada hosila aynan **1 ga teng**. Bu chuqur tarmoqlarda gradient yo‘qolishi (Vanishing Gradient) muammosini hal qiladi va o‘qitishni keskin tezlashtiradi.
-*   **Kamchiligi (Dying ReLU):** Agar neyronning kirish qiymati manfiy bo‘lib qolsa, u 0 qaytaradi va uning gradienti ham 0 bo‘ladi. Agar o‘qitish davomida neyron vaznlari shunday o‘zgarib qolsaki, u doim manfiy qiymat oladigan bo‘lsa, bu neyron butunlay "o‘ladi" va qaytib hech qachon ishlamaydi.
+    *   **Sparsity (Siyraklik):** Neyronlarning bir qismi 0 bo'lib turadi, bu modelni yengil va samarali qiladi.
+    *   **Gradient saqlanishi:** Musbat sohada hosila aynan **1 ga teng**. Bu chuqur tarmoqlarda gradient yo'qolishi (Vanishing Gradient) muammosini hal qiladi.
+*   **Kamchiligi (Dying ReLU):** Agar neyronning kirish qiymati manfiy bo'lib qolsa, u 0 qaytaradi va uning gradienti ham 0 bo'ladi. Bu neyron butunlay "o'ladi".
 
 **2. Leaky ReLU:**
-*   **Formula:** $f(x) = \max(\alpha x, x)$, odatda $\alpha = 0.01$.
-*   **Mantiq:** Manfiy qiymatlarni butunlay o‘chirmaydi, balki ularni biroz kamaytirib o‘tkazadi (kichik nishablik).
-*   **Farqi:** "Dying ReLU" muammosini hal qiladi. Manfiy sohada ham kichik gradient oqimi mavjud bo‘ladi, shuning uchun "o‘lgan" neyronlar qayta tiklanish imkoniyatiga ega bo‘ladi.
-*   **Qachon ishlatiladi:** Agar ReLU bilan o‘qitishda ko‘p neyronlar ishlamay qolayotganini sezsangiz, Leaky ReLU yaxshi alternativ hisoblanadi.
+
+$$f(x) = \max(\alpha x, x) = \begin{cases} x & \text{if } x > 0 \\ \alpha x & \text{if } x \leq 0 \end{cases}$$
+
+odatda $\alpha = 0.01$.
+
+$$f'(x) = \begin{cases} 1 & \text{if } x > 0 \\ \alpha & \text{if } x \leq 0 \end{cases}$$
+
+*   **Farqi:** "Dying ReLU" muammosini hal qiladi. Manfiy sohada ham kichik gradient oqimi ($\alpha$) mavjud bo'ladi.
+*   **Qachon ishlatiladi:** Agar ReLU bilan o'qitishda ko'p neyronlar ishlamay qolayotganini sezsangiz, Leaky ReLU yaxshi alternativ hisoblanadi.
 
 ---
 
 ### 39. ELU (Exponential Linear Unit) funksiyasi nima va uning asosiy afzalliklari nimada, izohlab bering.
 
 **Javob:**
+
 **Tushuncha:**
 ELU — bu ReLU ning kamchiliklarini tuzatish va model barqarorligini oshirish uchun ishlab chiqilgan funksiya.
-*   **Musbat qismda ($x > 0$):** $x$ (xuddi ReLU kabi).
-*   **Manfiy qismda ($x \le 0$):** $\alpha (e^x - 1)$. Bu qism silliq egri chiziq bo‘lib, sekin-asta $-\alpha$ qiymatiga yaqinlashadi (saturatsiya bo‘ladi).
+
+**Formula:**
+
+$$f(x) = \begin{cases} x & \text{if } x > 0 \\ \alpha(e^x - 1) & \text{if } x \leq 0 \end{cases}$$
+
+odatda $\alpha = 1.0$.
+
+**Hosila:**
+
+$$f'(x) = \begin{cases} 1 & \text{if } x > 0 \\ \alpha e^x = f(x) + \alpha & \text{if } x \leq 0 \end{cases}$$
+
+**Grafik:**
+```
+    f(x)
+     ^
+     |      ╱
+     |     ╱
+     |    ╱
+     |___╱___> x
+    -α╱
+```
 
 **Afzalliklari:**
 1.  **Zero-Mean Activations (O‘rtacha qiymat nolga yaqin):** ReLU va Sigmoid dan farqli o‘laroq, ELU manfiy qiymatlar ham qabul qiladi. Bu qatlam chiqishlarining o‘rtacha qiymatini 0 ga yaqinlashtiradi. Bu xuddi Batch Normalization effektiga o‘xshab, keyingi qatlamlar uchun o‘qishni osonlashtiradi va konvergensiyani tezlashtiradi.

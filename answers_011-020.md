@@ -6,9 +6,19 @@
 Yo‘qotish funksiyasi (Loss Function yoki Cost Function) — bu neyron tarmoq o‘qitish jarayonining eng muhim "kompasi"dir. U modelning qanchalik yomon ishlayotganini sonli ko‘rinishda ifodalaydi.
 
 **Vazifasi:**
-Model bashorat qilgan natija (\(\hat{y}\)) va haqiqiy to‘g‘ri javob (\(y\)) o‘rtasidagi farqni hisoblash. Agar model "bu rasm it" desa-yu, aslida rasmda mushuk bo‘lsa, yo‘qotish funksiyasi katta qiymat (xatolik) qaytaradi. Agar model to‘g‘ri topsa, qiymat nolga yaqin bo‘ladi.
-*   Regressiya masalalari uchun ko‘pincha **MSE (Mean Squared Error)** ishlatiladi.
-*   Tasniflash (klassifikatsiya) masalalari uchun **Cross-Entropy Loss** ishlatiladi.
+Model bashorat qilgan natija ($\hat{y}$) va haqiqiy to'g'ri javob ($y$) o'rtasidagi farqni hisoblash. Agar model "bu rasm it" desa-yu, aslida rasmda mushuk bo'lsa, yo'qotish funksiyasi katta qiymat (xatolik) qaytaradi. Agar model to'g'ri topsa, qiymat nolga yaqin bo'ladi.
+
+**Mashhur yo'qotish funksiyalari:**
+
+1. **MSE (Mean Squared Error)** - Regressiya masalalari uchun:
+
+   $$\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+
+2. **Cross-Entropy Loss** - Tasniflash masalalari uchun:
+
+   $$\text{Cross-Entropy} = -\sum_{i=1}^{C} y_i \log(\hat{y}_i)$$
+
+   bu yerda $C$ - sinflar soni.
 
 **Ahamiyati:**
 Neyron tarmoq o‘qitilayotganda, bizning maqsadimiz aynan shu funksiya qiymatini **minimallashtirishdir**. Butun optimizatsiya jarayoni (Gradient tushish) ushbu funksiyaga asoslanadi. Model o‘z vaznlarini (parametrlarini) tasodifiy o‘zgartirmaydi, balki yo‘qotish funksiyasini kamaytirish yo‘nalishida o‘zgartiradi. Agar yo‘qotish funksiyasi noto‘g‘ri tanlansa yoki noto‘g‘ri ishlasa, model hech qachon o‘rganmaydi, chunki u "yaxshi" va "yomon" natija nima ekanligini ajrata olmay qoladi.
@@ -33,16 +43,35 @@ Backpropagation (orqaga tarqalish) algoritmining maqsadi — tarmoqdagi har bir 
 ### 13. Gradient tushish (gradient descent) usulining ishlash mexanizmini bayon qilib bering.
 
 **Javob:**
-Gradient tushish — bu funksiyaning minimum nuqtasini (eng kichik qiymatini) topish uchun ishlatiladigan iterativ optimizatsiya algoritmidir. Uni ko‘pincha "tog‘dan vodiyga tushayotgan ko‘r sayyoh"ga o‘xshatishadi.
+Gradient tushish — bu funksiyaning minimum nuqtasini (eng kichik qiymatini) topish uchun ishlatiladigan iterativ optimizatsiya algoritmidir. Uni ko'pincha "tog'dan vodiyga tushayotgan ko'r sayyoh"ga o'xshatishadi.
+
+**Gradient tushish vizualizatsiyasi:**
+```
+Loss
+  ^
+  |    ╱╲
+  |   ╱  ╲      ①
+  |  ╱    ╲    ╱
+  | ╱      ╲  ╱  ②
+  |╱        ╲╱     ╲  ③
+  |              ╲  ╲╱ ④⑤ ← minimum
+  └─────────────────────────> Parametr (w)
+
+  ① → ② → ③ → ④ → ⑤ (gradient tushish qadamlari)
+```
 
 **Ishlash mexanizmi:**
 1.  **Boshlash:** Model parametrlari (vaznlar) tasodifiy qiymatlar bilan initsializatsiya qilinadi. Biz tog‘ning qayeridadir turibmiz.
 2.  **Gradientni hisoblash:** Joriy nuqtada Loss funksiyaning gradienti hisoblanadi. Gradient bizga "yuqoriga eng tik chiqish" yo‘nalishini ko‘rsatadi.
-3.  **Qadam tashlash:** Biz pastga tushmoqchi bo‘lganimiz uchun, gradientga **qarama-qarshi** yo‘nalishda qadam tashlaymiz.
-4.  **Yangilash formulasi:** \(w_{yangi} = w_{eski} - \eta \cdot \nabla L\).
-    *   \(w\) — vazn.
-    *   \(\nabla L\) — gradient.
-    *   \(\eta\) (eta) — o‘qitish tezligi (learning rate), qadam kattaligini belgilaydi.
+3.  **Qadam tashlash:** Biz pastga tushmoqchi bo'lganimiz uchun, gradientga **qarama-qarshi** yo'nalishda qadam tashlaymiz.
+4.  **Yangilash formulasi:**
+
+    $$w_{yangi} = w_{eski} - \eta \cdot \nabla L$$
+
+    bu yerda:
+    - $w$ — vazn
+    - $\nabla L$ — gradient ($\frac{\partial L}{\partial w}$)
+    - $\eta$ — o'qitish tezligi (learning rate), qadam kattaligini belgilaydi
 5.  **Takrorlash:** Bu jarayon (2-4 qadamlar) xatolik minimumga yetguncha yoki ma’lum sonli epoxalar davomida takrorlanadi.
 
 Natijada, har bir qadamda xatolik kamayib boradi va model "o‘rganadi".
@@ -113,7 +142,19 @@ Tarmoqning kirish qismiga (boshiga) yaqin joylashgan qatlamlar uchun hisoblangan
 *   Agar \(\nabla L \approx 0\) bo‘lsa, \(w\) o‘zgarmaydi.
 *   Natijada, chuqur tarmoqning boshlang‘ich qatlamlari (eng muhim xususiyatlarni ajratuvchi qism) o‘rganishdan to‘xtaydi. Model xuddi sayoz model kabi ishlay boshlaydi yoki umuman o‘qimaydi.
 
-**Asosiy sababchi:** Sigmoid yoki Tanh kabi faollashtirish funksiyalari. Ularning hosilasi har doim 1 dan kichik (Sigmoidda max 0.25). Ko‘p qatlamli tarmoqda 0.25 ni qayta-qayta ko‘paytirish gradientni yo‘q qilib yuboradi.
+**Asosiy sababchi:** Sigmoid yoki Tanh kabi faollashtirish funksiyalari. Ularning hosilasi har doim 1 dan kichik.
+
+**Sigmoid funksiyasi va uning hosilasi:**
+
+$$\sigma(x) = \frac{1}{1 + e^{-x}}$$
+
+$$\sigma'(x) = \sigma(x) \cdot (1 - \sigma(x)) \leq 0.25$$
+
+**Muammo:** Ko'p qatlamli tarmoqda gradientlar zanjir qoidasi orqali ko'paytiriladi:
+
+$$\frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial a_n} \cdot \sigma'(z_n) \cdot \sigma'(z_{n-1}) \cdot ... \cdot \sigma'(z_1)$$
+
+Agar $n=100$ bo'lsa: $(0.25)^{100} \approx 6.2 \times 10^{-61}$ - deyarli nol!
 
 ---
 
@@ -141,9 +182,17 @@ Uchala usul ham gradient tushishining variatsiyalaridir.
     *   Faqat **hozirgi** qadamdagi gradientga qaraydi.
     *   **Muammo:** Agar vodiy yuzasi notekis bo‘lsa, SGD u yoqdan-bu yoqqa qattiq tebranadi va manzilga sekin boradi.
 2.  **Momentum (Impuls):**
-    *   Fizikadagi inersiya qonuniga asoslanadi. U oldingi qadamlar yo‘nalishini "eslab qoladi" va o‘sha tomonga harakatni davom ettiradi.
-    *   Formula: \(v_t = \gamma v_{t-1} + \eta \nabla L\). Vazn: \(w = w - v_t\).
-    *   **Farqi:** Agar gradient vaqtinchalik noto‘g‘ri tomonga o‘zgarsa ham, momentum uni to‘g‘ri yo‘lda ushlab turadi. Tebranishlarni kamaytiradi va tezlikni oshiradi.
+    *   Fizikadagi inersiya qonuniga asoslanadi. U oldingi qadamlar yo'nalishini "eslab qoladi" va o'sha tomonga harakatni davom ettiradi.
+
+    **Formulalar:**
+
+    $$v_t = \gamma v_{t-1} + \eta \nabla L$$
+
+    $$w = w - v_t$$
+
+    bu yerda $\gamma$ - momentum koeffitsienti (odatda 0.9).
+
+    *   **Farqi:** Agar gradient vaqtinchalik noto'g'ri tomonga o'zgarsa ham, momentum uni to'g'ri yo'lda ushlab turadi. Tebranishlarni kamaytiradi va tezlikni oshiradi.
 3.  **Nesterov Accelerated Gradient (NAG):**
     *   Momentumning "aqlliroq" versiyasi.
     *   **Farqi:** Oddiy Momentum avval joriy joyda gradient hisoblaydi, keyin sakraydi. Nesterov esa "Men baribir impuls hisobiga oldinga sakrayman, keling, o‘sha **sakrab tushadigan joyimdagi** gradientni hisoblayman" deydi. Bu kelajakni oldindan ko‘rishga o‘xshaydi va modelga to‘siqlarga yaqinlashganda oldinroq "tormozlash" imkonini beradi. Bu konvergensiyani yanada barqaror qiladi.
@@ -160,7 +209,21 @@ Adam (Adaptive Moment Estimation) — hozirgi kunda eng ommabop optimizator.
     *   SGD barcha parametrlar (vaznlar) uchun bitta umumiy o‘qitish tezligini (\(\eta\)) ishlatadi. Bu muammoli, chunki ba’zi parametrlar tez, ba’zilari sekin o‘zgarishi kerak bo‘lishi mumkin.
     *   Adam har bir parametr uchun **alohida** learning rate hisoblaydi. Tez-tez uchraydigan (gradienti katta) parametrlar uchun qadamni kichraytiradi, kam uchraydiganlar uchun esa kattalashtiradi.
 2.  **Momentum va RMSProp kombinatsiyasi:**
-    *   Adam o‘zida Momentum (birinchi tartibli moment - o‘rtacha yo‘nalish) va RMSProp (ikkinchi tartibli moment - gradient dispersiyasi) g‘oyalarini birlashtiradi. Bu unga ham tezlikni (impulsni) saqlash, ham tebranishlarni so‘ndirish imkonini beradi.
+    *   Adam o'zida Momentum (birinchi tartibli moment - o'rtacha yo'nalish) va RMSProp (ikkinchi tartibli moment - gradient dispersiyasi) g'oyalarini birlashtiradi.
+
+    **Adam formulalari:**
+
+    $$m_t = \beta_1 m_{t-1} + (1-\beta_1) \nabla L$$  (1-moment, momentum)
+
+    $$v_t = \beta_2 v_{t-1} + (1-\beta_2) (\nabla L)^2$$  (2-moment, RMSProp)
+
+    $$\hat{m}_t = \frac{m_t}{1-\beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1-\beta_2^t}$$  (bias correction)
+
+    $$w = w - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}$$
+
+    bu yerda $\beta_1 \approx 0.9$, $\beta_2 \approx 0.999$, $\epsilon \approx 10^{-8}$.
+
+    Bu unga ham tezlikni (impulsni) saqlash, ham tebranishlarni so'ndirish imkonini beradi.
 3.  **Bias Correction (Siljishni tuzatish):**
     *   O‘qitish boshida o‘rtacha qiymatlar nolga yaqin bo‘lib qolishi mumkin. Adam maxsus formulalar orqali buni to‘g‘rilaydi va boshdanoq samarali ishlaydi.
 4.  **Foydalanish qulayligi:**

@@ -43,8 +43,25 @@ Tasavvur qiling, biz mushuk va itni ajratuvchi dastur tuzyapmiz.
 Chuqur neyron tarmoqlarni o‘qitish va ishlatish kompyuter texnikasining eng og‘ir vazifalaridan biridir. Buning bir nechta asosiy sabablari bor:
 
 1.  **Parametrlar sonining ko‘pligi:** Zamonaviy chuqur modellar (masalan, LLMlar yoki zamonaviy ko‘rish modellari) millionlab, hatto milliardlab va trillionlab parametrlarga (vaznlar va siljishlar) ega. Har bir o‘qitish qadamida ushbu milliardlab qiymatlarni yangilab turish kerak.
-2.  **Matritsali va Tenzorli amallar:** Neyron tarmoqning har bir qatlami aslida ulkan matritsalarni bir-biriga ko‘paytirishdan iborat. Masalan, 1024 ta neyronli qatlamni yana shunday qatlamga ulash 1 milliondan ortiq ko‘paytirish va qo‘shish amalini talab qiladi. Chuqur tarmoqda bunday qatlamlar yuzlab bo‘lishi mumkin.
-3.  **Backpropagation (Orqaga tarqalish):** O‘qitish jarayonida "gradient" hisoblash talab etiladi. Bu degani, xatolik funksiyasidan har bir parametrgacha bo‘lgan hosilalarni zanjir qoidasi bo‘yicha hisoblab chiqish kerak. Bu juda katta hajmdagi suzuvchi nuqtali (floating-point) hisob-kitoblarni talab qiladi.
+2.  **Matritsali va Tenzorli amallar:** Neyron tarmoqning har bir qatlami aslida ulkan matritsalarni bir-biriga ko'paytirishdan iborat. Masalan, 1024 ta neyronli qatlamni yana shunday qatlamga ulash 1 milliondan ortiq ko'paytirish va qo'shish amalini talab qiladi.
+
+    **Formula:** Agar kirish qatlami $n$ ta neyronli va chiqish qatlami $m$ ta neyronli bo'lsa, matritsali ko'paytirish uchun zarur bo'lgan amallar soni:
+
+    $$\text{Amallar soni} = n \times m \text{ (ko'paytirish)} + m \text{ (qo'shish)} \approx O(n \times m)$$
+
+    Chuqur tarmoqda bunday qatlamlar yuzlab bo'lishi mumkin, va umumiy murakkablik:
+
+    $$\text{Umumiy amallar} = \sum_{i=1}^{L} n_i \times m_i$$
+
+    bu yerda $L$ - qatlamlar soni.
+3.  **Backpropagation (Orqaga tarqalish):** O'qitish jarayonida "gradient" hisoblash talab etiladi. Bu degani, xatolik funksiyasidan har bir parametrgacha bo'lgan hosilalarni zanjir qoidasi bo'yicha hisoblab chiqish kerak.
+
+    **Gradient hisoblash formulasi (Zanjir qoidasi):**
+
+    $$\frac{\partial L}{\partial w_i} = \frac{\partial L}{\partial a_L} \cdot \frac{\partial a_L}{\partial a_{L-1}} \cdot ... \cdot \frac{\partial a_i}{\partial w_i}$$
+
+    bu yerda $L$ - xatolik funksiyasi, $w_i$ - $i$-qatlamdagi vazn, $a_i$ - $i$-qatlamdagi faollashtirish.
+    Bu juda katta hajmdagi suzuvchi nuqtali (floating-point) hisob-kitoblarni talab qiladi.
 4.  **Iterativ jarayon:** Model bir marta ko‘rib chiqishda o‘rganmaydi. U ma’lumotlar bazasini yuzlab yoki minglab marta (epoxalar) qayta-qayta ko‘rib chiqishi kerak. Bu esa umumiy hisoblash hajmini ming barobar oshiradi.
 5.  **Parallelizatsiya zarurati:** Oddiy protsessorlar (CPU) ketma-ket ishlashga mo‘ljallangan bo‘lib, bu turdagi hisoblashlar uchun sekinlik qiladi. Shu sababli, minglab kichik yadrolarga ega bo‘lgan va parallel ravishda millionlab amallarni bajara oladigan GPU (Videokarta) va maxsus TPU chiplari zarur bo‘ladi.
 
@@ -53,7 +70,21 @@ Chuqur neyron tarmoqlarni o‘qitish va ishlatish kompyuter texnikasining eng og
 ### 4. “Model chuqurligi” (model depth) tushunchasini va uning o‘qitish jarayoniga ta’sirini tushuntirib bering.
 
 **Javob:**
-**Tushuncha:** "Model chuqurligi" neyron tarmog‘idagi yashirin qatlamlar (hidden layers) sonini bildiradi. Kirish va chiqish qatlamlari orasida qanchalik ko‘p qatlam joylashgan bo‘lsa, model shunchalik "chuqur" hisoblanadi. Masalan, 2 ta yashirin qatlamli model "sayoz" (shallow), 150 ta qatlamli model esa "juda chuqur" hisoblanadi.
+**Tushuncha:** "Model chuqurligi" neyron tarmog'idagi yashirin qatlamlar (hidden layers) sonini bildiradi. Kirish va chiqish qatlamlari orasida qanchalik ko'p qatlam joylashgan bo'lsa, model shunchalik "chuqur" hisoblanadi. Masalan, 2 ta yashirin qatlamli model "sayoz" (shallow), 150 ta qatlamli model esa "juda chuqur" hisoblanadi.
+
+**Chuqurlik va Aniqlik munosabati (vizual):**
+```
+Aniqlik
+   ^
+   |            ╱───── Chuqur model (Big Data bilan)
+   |          ╱
+   |        ╱
+   |      ╱──────────── Sayoz model
+   |    ╱
+   |  ╱
+   |╱
+   └──────────────────────> Ma'lumotlar hajmi
+```
 
 **O‘qitish jarayoniga ta’siri:**
 1.  **Ijobiy ta’sir (Abstraksiya):** Chuqurlik modelga ma’lumotlarni ierarxik tarzda o‘rganish imkonini beradi. Har bir yangi qatlam oldingi qatlam ma’lumotlarini birlashtirib, murakkabroq tushunchani hosil qiladi. Chuqur modellar kamroq neyronlar bilan ham juda murakkab funksiyalarni approksimatsiya qila oladi (samaradorlik).
@@ -139,10 +170,54 @@ Shu sababli, chuqur o‘qitishda eng yaxshi regulyarizatsiya (overfittingga qars
 Ko‘p qatlamli perseptron (Multilayer Perceptron - MLP) — bu eng sodda va fundamental chuqur neyron tarmoq turidir.
 
 **Arxitekturasi:**
-MLP kamida uchta asosiy qismdan iborat bo‘ladi:
-1.  **Kirish qatlami (Input Layer):** Ma’lumotlarni qabul qiladi (masalan, rasm piksellari vektori). Bu qatlamda hech qanday hisob-kitob bajarilmaydi, u faqat uzatuvchi vazifasini o‘taydi.
-2.  **Yashirin qatlamlar (Hidden Layers):** Kirish va chiqish orasida joylashgan bir yoki bir nechta qatlamlar. Aynan shu yerda asosiy hisob-kitoblar va xususiyatlarni ajratib olish jarayoni sodir bo‘ladi. Har bir neyron oldingi qatlamdagi barcha neyronlar bilan bog‘langan (Fully Connected - To‘liq bog‘langan). Har bir bog‘lanish o‘z vazniga ($w$) ega. Neyron qiymatlarni vaznlarga ko‘paytirib yig‘adi va **faollashtirish funksiyasini** (masalan, ReLU yoki Sigmoid) qo‘llaydi. Bu funksiyalar tarmoqqa chiziqli bo‘lmagan murakkablikni kiritadi.
-3.  **Chiqish qatlami (Output Layer):** Modelning yakuniy bashoratini beradi. Tasniflash masalasida bu qatlamdagi neyronlar soni sinflar soniga teng bo‘ladi va ko‘pincha Softmax funksiyasi orqali ehtimolliklarni qaytaradi.
+
+**MLP tuzilishi (vizual):**
+```
+Kirish Qatlami    Yashirin Qatlamlar         Chiqish Qatlami
+    (x)              (h1)      (h2)               (y)
+
+    x₁ ──┐        ┌─── h₁₁ ──┐    ┌─── h₂₁ ──┐
+         ├────────┤           ├────┤           ├──── y₁
+    x₂ ──┤        │    h₁₂ ──┤    │    h₂₂ ──┤
+         │        │           │    │           │
+    x₃ ──┤        └─── h₁₃ ──┘    └─── h₂₃ ──┘──── y₂
+         │
+    x₄ ──┘
+
+  [n_input]      [n_h1]    [n_h2]          [n_output]
+```
+
+MLP kamida uchta asosiy qismdan iborat bo'ladi:
+1.  **Kirish qatlami (Input Layer):** Ma'lumotlarni qabul qiladi (masalan, rasm piksellari vektori). Bu qatlamda hech qanday hisob-kitob bajarilmaydi, u faqat uzatuvchi vazifasini o'taydi.
+2.  **Yashirin qatlamlar (Hidden Layers):** Kirish va chiqish orasida joylashgan bir yoki bir nechta qatlamlar. Aynan shu yerda asosiy hisob-kitoblar va xususiyatlarni ajratib olish jarayoni sodir bo'ladi. Har bir neyron oldingi qatlamdagi barcha neyronlar bilan bog'langan (Fully Connected - To'liq bog'langan). Har bir bog'lanish o'z vazniga ($w$) ega.
+
+    **Neyron hisoblash formulasi:**
+
+    $$z = \sum_{i=1}^{n} w_i \cdot x_i + b$$
+
+    $$a = f(z)$$
+
+    bu yerda:
+    - $x_i$ - kirish qiymatlari
+    - $w_i$ - vaznlar (weights)
+    - $b$ - siljish (bias)
+    - $f$ - faollashtirish funksiyasi (masalan, ReLU, Sigmoid, Tanh)
+    - $a$ - neyronning chiqish qiymati
+
+    Bu funksiyalar tarmoqqa chiziqli bo'lmagan murakkablikni kiritadi.
+
+    **Mashhur faollashtirish funksiyalari:**
+    - ReLU: $f(z) = \max(0, z)$
+    - Sigmoid: $f(z) = \frac{1}{1 + e^{-z}}$
+    - Tanh: $f(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}$
+
+3.  **Chiqish qatlami (Output Layer):** Modelning yakuniy bashoratini beradi. Tasniflash masalasida bu qatlamdagi neyronlar soni sinflar soniga teng bo'ladi va ko'pincha Softmax funksiyasi orqali ehtimolliklarni qaytaradi.
+
+    **Softmax formulasi:**
+
+    $$\text{Softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}$$
+
+    bu yerda $K$ - sinflar soni.
 
 **Chuqur o‘qitishdagi roli:**
 MLP chuqur o‘qitishning "g‘ishti" hisoblanadi.

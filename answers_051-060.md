@@ -59,13 +59,25 @@ Ikkalasi ham model sifatini o‘lchaydi, lekin turli vaziyatlarda ishlatiladi.
 ### 55. Tasniflash vazifalarida chalkashlik matritsasi (confusion matrix) nima ekanini va qanday axborot berishini tushuntiring.
 
 **Javob:**
-Chalkashlik matritsasi (Confusion Matrix) — bu modelning bashoratlari va haqiqiy qiymatlar o‘rtasidagi munosabatni batafsil ko‘rsatuvchi jadvaldir. $N$ ta sinf uchun $N \times N$ jadval tuziladi.
-Binar (2 sinfli) tasniflash uchun u 4 ta katakdan iborat:
+Chalkashlik matritsasi (Confusion Matrix) — bu modelning bashoratlari va haqiqiy qiymatlar o'rtasidagi munosabatni batafsil ko'rsatuvchi jadvaldir. $N$ ta sinf uchun $N \times N$ jadval tuziladi.
 
-1.  **True Positive (TP):** Model "Ha" dedi va bu **To‘g‘ri**. (Kasalni topdi).
-2.  **True Negative (TN):** Model "Yo‘q" dedi va bu **To‘g‘ri**. (Sog‘lomni topdi).
-3.  **False Positive (FP):** Model "Ha" dedi, lekin bu **Xato**. ("Yolg‘on signal" — sog‘lom odamni kasal dedi). I-tur xatolik.
-4.  **False Negative (FN):** Model "Yo‘q" dedi, lekin bu **Xato**. (Kasalni o‘tkazib yubordi). II-tur xatolik.
+**Binar tasniflash uchun Confusion Matrix:**
+```
+                    Haqiqiy Qiymat
+                  Musbat    Manfiy
+               ┌──────────┬─────────┐
+  Bashorat     │    TP    │   FP    │
+  Musbat       │ (To'g'ri)│ (Xato)  │
+               ├──────────┼─────────┤
+  Bashorat     │    FN    │   TN    │
+  Manfiy       │ (Xato)   │(To'g'ri)│
+               └──────────┴─────────┘
+```
+
+1.  **True Positive (TP):** Model "Ha" dedi va bu **To'g'ri**. (Kasalni topdi).
+2.  **True Negative (TN):** Model "Yo'q" dedi va bu **To'g'ri**. (Sog'lomni topdi).
+3.  **False Positive (FP):** Model "Ha" dedi, lekin bu **Xato**. ("Yolg'on signal" — sog'lom odamni kasal dedi). I-tur xatolik.
+4.  **False Negative (FN):** Model "Yo'q" dedi, lekin bu **Xato**. (Kasalni o'tkazib yubordi). II-tur xatolik.
 
 **Axborot:**
 Bu jadval orqali biz model aynan qayerda adashayotganini ko‘ramiz. U ko‘proq yolg‘on signal beryaptimi (FP) yoki narsalarni ko‘rmay qolyaptimi (FN)? Bu bizga strategiyani to‘g‘rilashga yordam beradi.
@@ -79,13 +91,21 @@ Bu ikki ko‘rsatkich o‘rtasida doimiy "savdo" (trade-off) mavjud.
 
 1.  **Precision (Aniqlik/Sifat):**
     *   Savol: "Model 'bu olma' deganlarning necha foizi haqiqatdan ham olma?"
-    *   Formula: $\frac{TP}{TP + FP}$.
-    *   **Rol:** Bizga **yolg‘on signallar** (False Positive) qimmatga tushganda muhim. Masalan, spam-filtr. Agar muhim xat "spam" deb ketib qolsa (FP), bu yomon. Biz spamni o‘tkazib yuborsak ham, muhim xatni yo‘qotmasligimiz kerak (High Precision).
 
-2.  **Recall (To‘liqlik/Qamrov):**
+    $$\text{Precision} = \frac{TP}{TP + FP}$$
+
+    *   **Rol:** Bizga **yolg'on signallar** (False Positive) qimmatga tushganda muhim. Masalan, spam-filtr. Agar muhim xat "spam" deb ketib qolsa (FP), bu yomon. Biz spamni o'tkazib yuborsak ham, muhim xatni yo'qotmasligimiz kerak (High Precision).
+
+2.  **Recall (To'liqlik/Qamrov / Sensitivity):**
     *   Savol: "Dunyodagi barcha olmalarning qanchasini model topa oldi?"
-    *   Formula: $\frac{TP}{TP + FN}$.
-    *   **Rol:** Bizga **o‘tkazib yuborish** (False Negative) xavfli bo‘lganda muhim. Masalan, saratonni aniqlash. Agar model kasalni "sog‘lom" deb yuborsa (FN), odam o‘lishi mumkin. Bizga yolg‘on bo‘lsa ham shubhalarni topish muhimroq (High Recall).
+
+    $$\text{Recall} = \frac{TP}{TP + FN}$$
+
+    *   **Rol:** Bizga **o'tkazib yuborish** (False Negative) xavfli bo'lganda muhim. Masalan, saratonni aniqlash. Agar model kasalni "sog'lom" deb yuborsa (FN), odam o'lishi mumkin. Bizga yolg'on bo'lsa ham shubhalarni topish muhimroq (High Recall).
+
+**F1-Score formulasi:**
+
+$$F1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}} = \frac{2 \cdot TP}{2 \cdot TP + FP + FN}$$
 
 ---
 
@@ -95,15 +115,33 @@ Bu ikki ko‘rsatkich o‘rtasida doimiy "savdo" (trade-off) mavjud.
 Model (masalan, Logistik regressiya) javobni "Ha" yoki "Yo‘q" deb emas, balki ehtimollik ko‘rinishida (0.8, 0.3) beradi. Biz qayerdan chegara (threshold) qo‘yishni (masalan, >0.5) o‘zimiz hal qilamiz.
 
 1.  **ROC Curve (Receiver Operating Characteristic):**
-    *   Bu grafik bo‘lib, unda biz chegara (threshold) ni 0 dan 1 gacha o‘zgartirib chiqqanimizda modelning **Recall (True Positive Rate)** va **False Positive Rate** qanday o‘zgarishini chizamiz.
-    *   Bu egri chiziq modelning barcha mumkin bo‘lgan chegaralardagi "xulq-atvorini" ko‘rsatadi.
+    *   Bu grafik bo'lib, unda biz chegara (threshold) ni 0 dan 1 gacha o'zgartirib chiqqanimizda modelning **TPR (True Positive Rate)** va **FPR (False Positive Rate)** qanday o'zgarishini chizamiz.
+
+    $$TPR = \frac{TP}{TP + FN} \quad \text{(Recall)}$$
+
+    $$FPR = \frac{FP}{FP + TN}$$
+
+**ROC Curve vizualizatsiyasi:**
+```
+TPR (Recall)
+  ^  1.0  ┌─────────────  Ideal model (AUC=1.0)
+  |      ╱
+  |     ╱ Yaxshi model
+  |    ╱  (AUC=0.8-0.9)
+  | 0.5╱─────────────── Random model (AUC=0.5)
+  |  ╱
+  | ╱ Yomon model
+  |╱
+  0────────────────────> FPR
+    0              0.5              1.0
+```
 
 2.  **AUC (Area Under the Curve):**
-    *   Bu ROC egri chizig‘i ostidagi **yuzadir**.
-    *   Qiymati 0 dan 1 gacha bo‘ladi.
+    *   Bu ROC egri chizig'i ostidagi **yuzadir**.
+    *   Qiymati 0 dan 1 gacha bo'ladi.
     *   **AUC = 0.5:** Model tavakkal (random) ishlamoqda (tanga tashlash bilan teng).
     *   **AUC = 1.0:** Ideal model.
-    *   **Ma’nosi:** AUC qanchalik baland bo‘lsa, model musbat va manfiy sinflarni shunchalik yaxshi ajratadi. AUC bizga aniq bir chegara tanlamasdan turib modelning umumiy sifatini baholash imkonini beradi.
+    *   **Ma'nosi:** AUC qanchalik baland bo'lsa, model musbat va manfiy sinflarni shunchalik yaxshi ajratadi. AUC bizga aniq bir chegara tanlamasdan turib modelning umumiy sifatini baholash imkonini beradi.
 
 ---
 
@@ -129,10 +167,28 @@ Shuningdek, MSE matematik jihatdan silliq (hosilasi oson olinadi), MAE esa 0 nuq
 **Javob:**
 Har qanday modelning xatoligi ikki qismdan iborat: Bias (Siljish) va Variance (Tarqoqlik).
 
-1.  **Bias (Underfitting):** Model juda sodda. U ma’lumotlardagi murakkab bog‘liqlikni ilg‘ay olmaydi.
-    *   Chuqur o‘qitishda: Qatlamlar kam, neyronlar yetarli emas. Natijada Train va Test xatoligi ikkalasi ham yuqori bo‘ladi.
-2.  **Variance (Overfitting):** Model juda murakkab va sezgir. U ma’lumotdagi shovqinni ham o‘rganib oladi.
-    *   Chuqur o‘qitishda: Parametrlar juda ko‘p, ma’lumot kam. Natijada Train xatoligi juda past, lekin Test xatoligi yuqori bo‘ladi.
+$$\text{Total Error} = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error}$$
+
+**Bias-Variance Trade-off vizualizatsiyasi:**
+```
+Error
+  ^
+  |   Variance  ╱
+  |            ╱    ╲  Total Error
+  |           ╱      ╲╱───────
+  |          ╱      ╱
+  |    Bias╱______╱
+  |       ╱
+  |______╱
+  └────────────────────────> Model Murakkabligi
+   Sodda            Optimal           Murakkab
+(Underfitting)                     (Overfitting)
+```
+
+1.  **Bias (Underfitting):** Model juda sodda. U ma'lumotlardagi murakkab bog'liqlikni ilg'ay olmaydi.
+    *   Chuqur o'qitishda: Qatlamlar kam, neyronlar yetarli emas. Natijada Train va Test xatoligi ikkalasi ham yuqori bo'ladi.
+2.  **Variance (Overfitting):** Model juda murakkab va sezgir. U ma'lumotdagi shovqinni ham o'rganib oladi.
+    *   Chuqur o'qitishda: Parametrlar juda ko'p, ma'lumot kam. Natijada Train xatoligi juda past, lekin Test xatoligi yuqori bo'ladi.
 
 **Trade-off (Muvozanat):**
 Bizning maqsadimiz o‘rtalikni topishdir.
