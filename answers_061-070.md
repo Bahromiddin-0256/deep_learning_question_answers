@@ -60,12 +60,16 @@ CNNda biz filtr qiymatlarini qo‘lda yozmaymiz. O‘qitish jarayonida (Backprop
 **Tushuncha:**
 Xususiyat xaritasi (Feature Map yoki Activation Map) — bu konvolyutsiya amali bajarilgandan so‘ng hosil bo‘lgan natijaviy matritsadir.
 
-**Roli:**
-Asl rasm — bu ranglar (RGB) xaritasi.
-Birinchi qatlamdan chiqqan Feature Map — bu "chiziqlar va burchaklar" xaritasi. U rasmning qayerida chiziq borligini ko‘rsatadi.
-Chuqurroq qatlamlardagi Feature Maplar esa "ko‘zlar", "g‘ildiraklar" yoki "panjalar" xaritasi bo‘lishi mumkin.
+**Tuzilishi:**
+*   Agar kirish rasmida 3 ta kanal bo‘lsa (RGB), konvolyutsiya qatlamida biz 64 ta filtr ishlatishimiz mumkin.
+*   Natijada 64 ta alohida Feature Map hosil bo‘ladi (Hajmi: Balandlik $\times$ Eni $\times$ 64).
 
-Har bir konvolyutsiya qatlamida o‘nlab yoki yuzlab filtrlar bo‘ladi. Har bir filtr bitta alohida Feature Map hosil qiladi. Keyingi qatlam ushbu xaritalarning hammasini birlashtirib, murakkabroq xulosa chiqaradi.
+**Roli:**
+Har bir Feature Map rasmning o‘ziga xos xususiyatini ifodalaydi.
+*   1-xarita: Rasmning barcha **vertikal** chiziqlari bor joyni yoritadi.
+*   2-xarita: Rasmning **yashil** rangli qismlarini yoritadi.
+*   Chuqurroq qatlamlardagi xaritalar: **"Ko'z"** bor joyni yoki **"G'ildirak"** bor joyni ko‘rsatadi.
+Keyingi qatlamlar ushbu xaritalarni birlashtirib, murakkabroq xulosa chiqaradi.
 
 ---
 
@@ -80,7 +84,7 @@ Padding — bu rasmning atrofiga sun’iy piksellar (odatda nollar — Zero Padd
 
 **Maqsadlari:**
 1.  **O‘lchamni saqlash:** Kirish va chiqish o‘lchamini bir xil ushlab turish (Same Padding). Bu juda chuqur tarmoqlar (ResNet) qurish uchun zarur.
-2.  **Chetki ma’lumotni saqlash:** Padding bo‘lmasa, rasmning burchagidagi ma’lumotlar faqat bir marta filtrga tushadi. Padding bilan esa chekkalar ham markaz kabi to‘liq qayta ishlanadi.
+2.  **Chetki ma’lumotni saqlash:** Padding bo‘lmasa, rasmning burchagidagi ma’lumotlar faqat bir marta filtrga tushadi (markazdagilar 9 marta). Padding bilan esa chekkalar ham markaz kabi to‘liq qayta ishlanadi.
 
 ---
 
@@ -90,14 +94,15 @@ Padding — bu rasmning atrofiga sun’iy piksellar (odatda nollar — Zero Padd
 **Stride (Qadam):** Filtr rasm ustida yuranda har safar necha pikselga siljishini belgilaydi.
 
 1.  **Stride = 1:**
-    *   Filtr har bir pikseldan sakramay o‘tadi.
-    *   **Ta’siri:** Ma’lumot maksimal darajada saqlanadi. Chiqish o‘lchami kirish bilan deyarli bir xil bo‘ladi (agar padding bo‘lsa). Hisoblash hajmi katta.
+    *   Filtr har bir pikseldan sakramay, zich yurib o‘tadi.
+    *   **Ta’siri:** Ma’lumot maksimal darajada saqlanadi. Chiqish o‘lchami kirish bilan deyarli bir xil bo‘ladi.
 2.  **Stride = 2:**
-    *   Filtr 2 ta katak sakrab yuradi.
+    *   Filtr 2 ta katak sakrab yuradi (har ikkinchi pikselni o‘tkazib yuboradi).
     *   **Ta’siri:** Chiqish xaritasi eniga va bo‘yiga **2 barobar kichrayadi** (Downsampling). 100x100 rasm 50x50 bo‘lib qoladi.
-    *   Bu usul hisoblashni kamaytirish va Pooling o‘rnini bosish uchun ishlatiladi.
+    *   **Foydasi:** Bu usul hisoblash hajmini 4 barobar kamaytiradi va Pooling (Max Pooling) o‘rnini bosuvchi alternativa sifatida ishlatiladi.
 
-Formula: $Output = \frac{Input - Filter + 2 \cdot Padding}{Stride} + 1$.
+**Formula:**
+$$ Output = \lfloor \frac{Input - Filter + 2 \cdot Padding}{Stride} \rfloor + 1 $$
 
 ---
 
@@ -148,7 +153,8 @@ Dilation rate = 2 bo‘lgan 3x3 filtr (aslida 5x5 maydonni egallaydi):
 ```
 
 **Afzalliklari:**
-Parametrlar sonini ko‘paytirmasdan (baribir 9 ta son ishlatiladi), **qabul maydonini (receptive field) keskin kengaytirish** imkonini beradi. Bu ayniqsa tasvir segmentatsiyasi yoki yuqori sifatli audio generatsiyasida (WaveNet) juda foydali, chunki model katta kontekstni ko‘rishi kerak bo‘ladi.
+1.  **Katta Qabul Maydoni:** Parametrlar sonini ko‘paytirmasdan va tasvir o‘lchamini kichraytirmasdan (Pooling qilmasdan), **qabul maydonini (receptive field) keskin kengaytirish** imkonini beradi.
+2.  **Qo‘llanilishi:** Bu ayniqsa **Semantik Segmentatsiya** (DeepLab modeli) yoki yuqori sifatli audio generatsiyasida (WaveNet) juda foydali. Model katta kontekstni ko‘rishi kerak, lekin tasvir detallarini yo‘qotmasligi kerak.
 
 ---
 

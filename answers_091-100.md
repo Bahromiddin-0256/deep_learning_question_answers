@@ -85,30 +85,32 @@ Shuning uchun kontekstni cheksiz uzaytirib bo‘lmaydi — kompyuter xotirasi (V
 ### 96. Autoencoder (avtoenkoder) modelining asosiy g‘oyasini tushuntirib bering.
 
 **Javob:**
-Autoencoder — bu "Nazoratsiz o‘qitish" (Unsupervised Learning) turiga kiruvchi neyron tarmoq.
-**G‘oya:**
-Modelning maqsadi kirishga berilgan ma’lumotning (masalan, rasmning) aynan nusxasini chiqishda hosil qilishdir. $Output ≈ Input$.
-Lekin bunda bitta hiyla bor: Tarmoqning o‘rtasi ("beli") ataylab juda tor qilib qo‘yiladi.
+Autoencoder — bu "Nazoratsiz o‘qitish" (Unsupervised Learning) turiga kiruvchi neyron tarmoq. U "ma’lumotlarni siqish" va "xususiyatlarni ajratish" uchun ishlatiladi.
 
-**Maqsad:**
-Model rasmni shunchaki "ko‘chirib" qo‘ya olmaydi (o‘rtadan sig‘maydi). U rasmni siqishga, eng muhim ma’lumotlarni ajratib olib, keraksiz detallarni tashlab yuborishga majbur bo‘ladi.
-Bu xuddi zip-arxivatorga o‘xshaydi, lekin u ma’lumotlarning "mazmunini" siqadi.
+**Asosiy G‘oya:**
+Modelning maqsadi kirishga berilgan ma’lumotning (masalan, rasmning $x$) aynan nusxasini chiqishda hosil qilishdir ($x ≈ X$).
+Lekin bunda bitta muhim hiyla bor: Tarmoqning o‘rtasi ("beli") ataylab juda tor qilib qo‘yiladi.
+
+**Mantiq:**
+Model rasmni shunchaki "ko‘chirib" qo‘ya olmaydi (o‘rtadan sig‘maydi). U rasmni siqishga, eng muhim ma’lumotlarni ajratib olib, keraksiz detalllarni (shovqinni) tashlab yuborishga majbur bo‘ladi.
+Bu xuddi zip-arxivatorga o‘xshaydi, lekin u ma’lumotlarning aniq baytlarini emas, balki "semantik mazmunini" siqadi.
 
 ---
 
-### 97. Encoder va decoder tushunchalarini izohlab bering (Autoencoder kontekstida).
+### 97. Encoder va decoder tushunchalarini izohlab bering.
 
 **Javob:**
 Autoencoder ikki qismdan iborat simmetrik tarmoqdir:
 
-1.  **Encoder (Siquvchi):**
-    *   Kirish ma’lumotini ($x$) oladi va uni qatlamdan-qatlamga kichraytirib, "Latent kod" ($z$) ga aylantiradi.
-    *   Vazifasi: Ma’lumotni siqish va xususiyatlarni ajratib olish.
-2.  **Decoder (Tiklovchi):**
-    *   Siqilgan kodni ($z$) oladi va uni qatlamdan-qatlamga kengaytirib, asl ma’lumotni ($x'$) qayta tiklashga harakat qiladi.
-    *   Vazifasi: Siqilgan koddan to‘liq rasmni rekonstruksiya qilish.
+1.  **Encoder (Siquvchi - $f(x)$):**
+    *   Kirish ma’lumotini ($x$) oladi va uni qatlamdan-qatlamga kichraytirib, siqilgan **"Latent kod" ($z$)** ga aylantiradi.
+    *   **Vazifasi:** Ma’lumotni siqish va eng muhim xususiyatlarni (features) ajratib olish.
+2.  **Decoder (Tiklovchi - $g(z)$):**
+    *   Siqilgan kodni ($z$) oladi va uni qatlamdan-qatlamga kengaytirib, asl ma’lumotni ($X$) qayta tiklashga harakat qiladi.
+    *   **Vazifasi:** Siqilgan koddan to‘liq rasmni rekonstruksiya qilish.
 
-O‘qitish paytida biz $x$ va $x'$ orasidagi farqni (Loss) kamaytiramiz.
+**O‘qitish:**
+Biz kirish ($x$) va chiqish ($X$) orasidagi farqni (MSE Loss) minimallashtirish orqali Encoderni "yaxshi siqishga", Decoderni "yaxshi ochishga" o‘rgatamiz.
 
 ---
 
@@ -128,15 +130,15 @@ Bu ma’lumotlarning eng samarali (kompakt) ifodasini topishga olib keladi.
 ### 99. O‘lchamni kamaytirish (dimensionality reduction) vazifasida autoencoder dan qanday foydalanish mumkinligini izohlab bering.
 
 **Javob:**
-Odatda o‘lchamni kamaytirish uchun PCA (Principal Component Analysis) ishlatiladi, lekin PCA faqat chiziqli bog‘liqliklarni ko‘radi.
+Ma’lumotlarni vizualizatsiya qilish yoki saqlash uchun ularning o‘lchamini kamaytirish kerak (masalan, 1000 o‘lchamdan 2 o‘lchamga). Odatda PCA (Principal Component Analysis) ishlatiladi, lekin u faqat chiziqli bog‘liqliklarni ko‘radi.
 Autoencoder esa — bu **chiziqli bo‘lmagan PCA** dir.
 
-**Foydalanish:**
+**Foydalanish jarayoni:**
 1.  Autoencoderni to‘liq o‘qitamiz (kirishni tiklashga).
 2.  Keyin Decoder qismini kesib tashlaymiz.
 3.  Faqat Encoder qismini ishlatamiz: u bizga yuqori o‘lchamli ma’lumotni (masalan, HD rasm) kichik o‘lchamli vektorga (bottleneck code) aylantirib beradi.
 
-Bu kichik vektorlar ma’lumotlarni vizualizatsiya qilish (2D/3D ga tushirish), saqlashni tejash yoki boshqa modellar uchun kirish ma’lumoti sifatida (preprocessing) ishlatilishi mumkin.
+Bu kichik vektorlar ma’lumotlarning "mazmunini" saqlaydi va ularni 2D grafikda chizish (t-SNE orqali) yoki boshqa modellar uchun kirish ma’lumoti sifatida (preprocessing) ishlatish juda samarali.
 
 ---
 
@@ -148,7 +150,7 @@ Oddiy Autoencoder ba’zan baribir "yodlab olishga" (Identity) o‘tib ketishi m
 
 **Ishlash prinsipi:**
 Denoising Autoencoder (DAE) o‘qitish jarayonini qiyinlashtiradi:
-1.  Kirish rasmiga ataylab **shovqin qo‘shiladi** (masalan, ba’zi piksellar o‘chiriladi yoki dog‘ tushiriladi) $	o 	ilde{x}$.
+1.  Kirish rasmiga ataylab **shovqin qo‘shiladi** (masalan, ba’zi piksellar o‘chiriladi yoki dog‘ tushiriladi) $\to \tilde{x}$.
 2.  Modelga shu buzilgan rasm beriladi.
 3.  Lekin talab qilinadi: "Chiqishda menga buzilgan rasmni emas, **asl toza rasmni ($x$)** qaytarib ber!"
 
