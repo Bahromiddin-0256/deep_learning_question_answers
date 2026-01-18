@@ -7,10 +7,10 @@ Oldinga tarqalish (Forward Propagation) — bu modelga kirish ma’lumotlari ber
 
 **Bosqichlari:**
 1.  **Kirish (Input):** Ma’lumotlar (masalan, rasm piksellari vektori $x$) kirish qatlamiga uzatiladi.
-2.  **Chiziqli Transformatsiya (Linear Transformation):** Birinchi yashirin qatlamda har bir neyron kirish qiymatlarini o‘zining vaznlariga ($w$) ko‘paytiradi va siljish ($b$) ni qo‘shadi: $z = w \cdot x + b$. Bu har bir neyronning "o‘z fikrini" shakllantirishidir.
+2.  **Chiziqli Transformatsiya (Linear Transformation):** Birinchi yashirin qatlamda har bir neyron kirish qiymatlarini o‘zining vaznlariga ($w$) ko‘paytiradi va siljish ($b$) ni qo‘shadi: $z = w \cdot x + b$. Bu har bir neyronning "o‘z fikrini" shakllantirishidir. Matritsa ko‘rinishida: $Z = WX + B$.
 3.  **Faollashtirish (Activation):** Hosil bo‘lgan qiymat ($z$) chiziqli bo‘lmagan funksiyadan (masalan, ReLU) o‘tkaziladi: $a = \sigma(z)$. Bu qadam neyronni "yoqadi" yoki "o‘chiradi" va modelga murakkablik beradi.
 4.  **Qatlamlararo uzatish:** Chiqqan natija ($a$) keyingi qatlam uchun kirish ma’lumoti bo‘lib xizmat qiladi. 2 va 3-bosqichlar barcha yashirin qatlamlar uchun takrorlanadi.
-5.  **Chiqish (Output):** Eng oxirgi qatlamda natija olinadi. Agar tasniflash bo‘lsa, Softmax orqali ehtimolliklar ($p$) hisoblanadi. Bu modelning yakuniy bashoratidir ($\\hat{y}$). 
+5.  **Chiqish (Output):** Eng oxirgi qatlamda natija olinadi. Agar tasniflash bo‘lsa, Softmax orqali ehtimolliklar ($p$) hisoblanadi. Bu modelning yakuniy bashoratidir ($\hat{y}$). 
 
 ---
 
@@ -20,9 +20,9 @@ Oldinga tarqalish (Forward Propagation) — bu modelga kirish ma’lumotlari ber
 Orqaga tarqalish (Backpropagation) — bu modelning "o‘rganish" qismidir. Maqsad: qilingan xatoni tahlil qilib, vaznlarni to‘g‘rilash.
 
 **Bosqichlari:**
-1.  **Xatolikni hisoblash (Loss Computation):** Oldinga tarqalish tugagach, bashorat ($\\hat{y}$) va haqiqiy javob ($y$) solishtiriladi va xatolik funksiyasi qiymati ($L$) hisoblanadi.
+1.  **Xatolikni hisoblash (Loss Computation):** Oldinga tarqalish tugagach, bashorat ($\hat{y}$) va haqiqiy javob ($y$) solishtiriladi va xatolik funksiyasi qiymati ($L$) hisoblanadi (masalan, Cross-Entropy).
 2.  **Gradientni hisoblash (Output Layer):** Avval eng oxirgi qatlamdagi xatolikning hosilasi (gradienti) hisoblanadi. Biz so‘raymiz: "Natija to‘g‘riroq bo‘lishi uchun oxirgi neyronlar qiymati qanchaga o‘zgarishi kerak?".
-3.  **Zanjir qoidasi (Chain Rule):** Xatolik signali orqaga, qatlamdan-qatlamga uzatiladi. Har bir qatlamda mahalliy gradientlar hisoblanadi va ular bir-biriga ko‘paytiriladi. Bu orqali biz har bir ichki vazn ($w$) umumiy xatoga qanchalik "aybdor" ekanini aniqlaymiz.
+3.  **Zanjir qoidasi (Chain Rule):** Xatolik signali orqaga, qatlamdan-qatlamga uzatiladi. Har bir qatlamda mahalliy gradientlar hisoblanadi va ular bir-biriga ko‘paytiriladi: $\frac{\partial L}{\partial w} = \frac{\partial L}{\partial a} \cdot \frac{\partial a}{\partial z} \cdot \frac{\partial z}{\partial w}$. Bu orqali biz har bir ichki vazn ($w$) umumiy xatoga qanchalik "aybdor" ekanini aniqlaymiz.
 4.  **Parametrlarni yangilash (Optimization):** Barcha gradientlar hisoblab bo‘lingach, Optimizator (masalan, SGD yoki Adam) ishga tushadi. U har bir vaznni gradientga qarama-qarshi yo‘nalishda biroz o‘zgartiradi: $w_{new} = w_{old} - \eta \cdot \text{gradient}$.
 
 ---
@@ -32,9 +32,9 @@ Orqaga tarqalish (Backpropagation) — bu modelning "o‘rganish" qismidir. Maqs
 **Javob:**
 Ma’lumotlarni ajratish modelning **xolisligini** va **haqiqiy samaradorligini** baholashning yagona yo‘lidir.
 
-1.  **Training Set (60-80%):** Model faqat shu ma’lumotlarni ko‘radi va o‘rganadi. Agar biz hamma ma’lumotni bunga ishlatsak, model "imtihon savollarini oldindan yodlab olgan talaba" kabi bo‘lib qoladi.
-2.  **Validation Set (10-20%):** Bu qism modelni o‘qitish davomida uni tekshirib turish uchun kerak. Biz bunga qarab: "O‘qishni to‘xtataymi?", "Learning rateni o‘zgartiraymi?", "Model yodlab olmayaptimi?" degan savollarga javob topamiz. Model bu ma’lumotlarni ko‘rmaydi, lekin biz ulardan foydalanib modelni **sozlaymiz**.
-3.  **Test Set (10-20%):** Bu "yopiq sandiq". Model to‘liq tayyor bo‘lib, barcha sozlashlar tugagandan keyin, faqat **bir marta** ochiladi. Bu modelning real hayotdagi kutilayotgan aniqligini ko‘rsatadi. Agar Test set bo‘lmasa, biz o‘zimizni o‘zimiz aldab, Validation setga moslashib qolgan model yaratishimiz mumkin.
+1.  **Training Set (60-80%):** Model faqat shu ma’lumotlarni ko‘radi va o‘rganadi (vaznlarini o‘zgartiradi). Agar biz hamma ma’lumotni bunga ishlatsak, model "imtihon savollarini oldindan yodlab olgan talaba" kabi bo‘lib qoladi.
+2.  **Validation Set (10-20%):** Bu qism modelni o‘qitish davomida uni tekshirib turish uchun kerak. Biz bunga qarab: "O‘qishni to‘xtataymi?", "Learning rateni o‘zgartiraymi?", "Model yodlab olmayaptimi?" degan savollarga javob topamiz. Model bu ma’lumotlarni ko‘rmaydi (vazn o‘zgarmaydi), lekin biz ulardan foydalanib modelni **sozlaymiz**.
+3.  **Test Set (10-20%):** Bu "yopiq sandiq". Model to‘liq tayyor bo‘lib, barcha sozlashlar tugagandan keyin, faqat **bir marta** ochiladi. Bu modelning real hayotdagi kutilayotgan aniqligini ko‘rsatadi. Agar Test set bo‘lmasa, biz o‘zimizni o‘zimiz aldab, Validation setga moslashib qolgan (overfitted to validation) model yaratishimiz mumkin.
 
 ---
 
